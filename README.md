@@ -21,3 +21,30 @@ and prepares an evidence-based recommendation for human review.
 This is a portfolio demonstration using synthetic data. It is not a medical
 device, does not provide medical advice, and does not make autonomous coverage
 decisions.
+
+## Portfolio Evidence Checklist
+
+- [ ] FastAPI AI orchestration service
+- [ ] Spring Boot enterprise integration API
+- [ ] PostgreSQL and vector retrieval
+- [ ] Versioned prompt templates
+- [ ] Structured and schema-validated LLM responses
+- [ ] Member eligibility tool
+- [ ] Claim history tool
+- [ ] Provider information tool
+- [ ] Healthcare policy retrieval with citations
+- [ ] Synthetic FHIR-based case data
+- [ ] Human approval workflow
+- [ ] Prompt-injection defenses
+- [ ] PHI masking demonstration
+- [ ] Automated evaluation dataset
+- [ ] Accuracy, latency and cost measurements
+- [ ] Timeouts, retries and fallback handling
+- [ ] Authentication and authorization
+- [ ] Audit logging
+- [ ] Docker Compose environment
+- [ ] CI/CD pipeline
+- [ ] AWS deployment
+- [ ] Architecture document
+- [ ] Production runbook
+- [ ] Five-minute client demonstration
