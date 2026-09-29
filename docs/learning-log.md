@@ -20,3 +20,30 @@ measurable requirements before selecting or implementing AI technology.
 
 The proposed pain points and target metrics are hypotheses that would require
 validation with real client stakeholders and operational data.
+
+
+## Day 3 — First LLM API Experiments
+
+### What I completed
+
+- Configured the OpenAI Python SDK
+- Sent requests through the Responses API
+- Separated high-level instructions from case input
+- Measured latency and token usage
+- Compared four instruction strategies
+- Tested a conflicting user instruction
+- Manually scored groundedness and instruction following
+
+### Key lessons
+
+- LLM output is nondeterministic and must be evaluated.
+- Detailed instructions improve behavior but do not guarantee correctness.
+- Model input and high-level application instructions serve different purposes.
+- Token usage affects cost and latency.
+- Safety requires application controls in addition to prompting.
+
+### Remaining questions
+
+- How can responses be forced into a validated schema?
+- How should transient API failures be handled?
+- How can these tests become automated evaluations?
