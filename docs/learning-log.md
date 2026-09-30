@@ -47,3 +47,33 @@ validation with real client stakeholders and operational data.
 - How can responses be forced into a validated schema?
 - How should transient API failures be handled?
 - How can these tests become automated evaluations?
+
+
+## Day 4 — FastAPI LLM Service
+
+### What I completed
+
+- Created a FastAPI application
+- Added health and case-analysis endpoints
+- Added Pydantic request validation
+- Added a stable API response model
+- Integrated the OpenAI Responses API
+- Reused grounded and injection-resistant instructions
+- Captured latency and token usage
+- Translated provider errors into controlled HTTP responses
+- Tested valid, invalid, and adversarial requests
+
+### Key lessons
+
+- Request validation should happen before an LLM call.
+- Client input must be treated as untrusted data.
+- API consumers need a stable contract even when model output is nondeterministic.
+- Model-provider failures must be translated into controlled service responses.
+- Prompt instructions are only one part of application safety.
+
+### Remaining questions
+
+- How can the LLM response be constrained to a strict schema?
+- How should the endpoint be tested without making a real API call?
+- How should prompts and schemas be versioned?
+- How should retries and timeouts be configured?
