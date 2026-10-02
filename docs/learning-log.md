@@ -77,3 +77,32 @@ validation with real client stakeholders and operational data.
 - How should the endpoint be tested without making a real API call?
 - How should prompts and schemas be versioned?
 - How should retries and timeouts be configured?
+
+
+## Day 5 — Structured LLM Outputs
+
+### What I completed
+
+- Designed a structured prior-authorization analysis schema
+- Added constrained enum values for evidence and workflow actions
+- Prevented the schema from representing approval or denial
+- Replaced `responses.create` with `responses.parse`
+- Parsed model output directly into a Pydantic object
+- Added a schema version to the API response
+- Tested incomplete, more complete, and adversarial cases
+- Verified that Pydantic rejects invalid decision values
+
+### Key lessons
+
+- Valid JSON is not the same as schema-valid JSON.
+- Structured Outputs provide shape and type guarantees, not factual guarantees.
+- The schema should make unsafe states difficult or impossible to represent.
+- Business decision boundaries should exist in application types as well as prompts.
+- Model refusals and incomplete responses must be handled explicitly.
+
+### Remaining questions
+
+- How should structured output be evaluated automatically?
+- How should refusals and incomplete model responses be distinguished?
+- How will the application obtain policy evidence?
+- How should API schemas be versioned as the product evolves?

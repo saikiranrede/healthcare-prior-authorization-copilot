@@ -18,11 +18,15 @@ class CaseAnalysisRequest(BaseModel):
         description="Healthcare service requiring review",
         examples=["Lumbar spine MRI"],
     )
-    eligibility_status: Literal["active", "inactive", "unknown"]
+    eligibility_status: Literal[
+        "active",
+        "inactive",
+        "unknown",
+    ]
     clinical_information: list[str] = Field(
         min_length=1,
         max_length=20,
-        description="Synthetic clinical facts submitted with the request",
+        description="Synthetic clinical facts supplied with the case",
         examples=[
             [
                 "Patient reports lower-back pain.",
@@ -30,6 +34,86 @@ class CaseAnalysisRequest(BaseModel):
                 "Previous conservative treatment was not supplied.",
             ]
         ],
+    )
+
+
+class StructuredCaseAnalysis(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    case_summary: str = Field(
+        description=(
+            "A short summary using only facts explicitly supplied "
+            "in the case"
+        )
+    )
+
+    known_facts: list[str] = Field(
+        description=(
+            "Facts explicitly present in the submitted case; "
+            "do not include assumptions"
+        )
+    )
+
+    missing_information: list[str] = Field(
+        description=(
+            "Information explicitly identified as absent, or information "
+            "required by a supplied policy but absent from the case"
+        )
+    )
+
+    evidence_sufficiency: Literal[
+        "sufficient",
+        "insufficient",
+        "unclear",
+    ] = Field(
+        description=(
+            "Whether the supplied evidence is sufficient for the next "
+            "case-preparation step; this is not a coverage decision"
+        )
+    )
+
+    recommended_next_action: Literal[
+        "request_additional_information",
+        "route_to_human_review",
+        "continue_case_preparation",
+    ] = Field(
+        description="The recommended operational workflow action"
+    )
+
+    action_reason: str = Field(
+        description=(
+            "A concise explanation of why the workflow action "
+            "was recommended"
+        )
+    )
+
+    authorization_decision: Literal[
+        "not_determined"
+    ] = Field(
+        description=(
+            "The AI must not approve or deny an authorization request"
+        )
+    )
+
+    human_review_required: bool = Field(
+        description=(
+            "Whether a human reviewer is required before any "
+            "coverage-related action"
+        )
+    )
+
+    limitations: list[str] = Field(
+        description=(
+            "Limitations of the analysis, including missing policy "
+            "or insufficient evidence"
+        )
+    )
+
+    warnings: list[str] = Field(
+        description=(
+            "Potentially conflicting, irrelevant, or unsafe content "
+            "found in the submitted case"
+        )
     )
 
 
@@ -44,7 +128,8 @@ class CaseAnalysisResponse(BaseModel):
     request_id: str
     model: str
     status: Literal["completed"]
-    analysis: str
+    schema_version: Literal["1.0"]
+    analysis: StructuredCaseAnalysis
     latency_ms: int
     token_usage: TokenUsage | None = None
 
