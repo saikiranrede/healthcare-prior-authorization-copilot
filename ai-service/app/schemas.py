@@ -6,6 +6,8 @@ from pydantic import BaseModel, ConfigDict, Field
 class CaseAnalysisRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    member_id: str = Field(min_length=1)
+
     case_id: str = Field(
         min_length=1,
         max_length=50,
@@ -18,11 +20,6 @@ class CaseAnalysisRequest(BaseModel):
         description="Healthcare service requiring review",
         examples=["Lumbar spine MRI"],
     )
-    eligibility_status: Literal[
-        "active",
-        "inactive",
-        "unknown",
-    ]
     clinical_information: list[str] = Field(
         min_length=1,
         max_length=20,
@@ -123,17 +120,33 @@ class TokenUsage(BaseModel):
     total_tokens: int
 
 
-class CaseAnalysisResponse(BaseModel):
-    case_id: str
-    request_id: str
-    model: str
-    status: Literal["completed"]
-    schema_version: Literal["1.0"]
-    analysis: StructuredCaseAnalysis
-    latency_ms: int
-    token_usage: TokenUsage | None = None
-
-
 class HealthResponse(BaseModel):
     status: Literal["healthy"]
     service: str
+
+
+class EligibilityResult(BaseModel):
+    member_id: str
+    status: Literal["active", "inactive", "not_found"]
+    plan_name: str | None = None
+    coverage_start_date: str | None = None
+    coverage_end_date: str | None = None
+    source: Literal["synthetic_member_repository"]
+    checked_at: str
+
+
+class ToolExecutionRecord(BaseModel):
+    tool_name: Literal["check_member_eligibility"]
+    call_id: str
+    status: Literal["succeeded"]
+    duration_ms: int
+
+
+class CaseAnalysisResponse(BaseModel):
+    request_id: str
+    model: str
+    analysis: StructuredCaseAnalysis
+    eligibility_verification: EligibilityResult
+    tool_executions: list[ToolExecutionRecord]
+    latency_ms: int
+    token_usage: TokenUsage | None = None
