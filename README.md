@@ -48,3 +48,13 @@ decisions.
 - [ ] Architecture document
 - [ ] Production runbook
 - [ ] Five-minute client demonstration
+
+### Eligibility tool integration
+
+The service uses OpenAI function calling to request member eligibility
+from a deterministic synthetic repository. The application validates
+and executes the tool call, records its execution, and returns the
+result to the model for structured case preparation.
+
+Eligibility verification is kept separate from medical-necessity and
+authorization decisions.
