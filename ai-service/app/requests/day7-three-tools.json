@@ -1,0 +1,8 @@
+{
+  "case_id": "PA-7001",
+  "member_id": "M-1001",
+  "provider_id": "P-2001",
+  "requested_service": "Lumbar spine MRI",
+  "clinical_information": ["Patient reports lower-back pain.",
+     "Symptom duration and response to prior conservative treatment were not provided."]
+}

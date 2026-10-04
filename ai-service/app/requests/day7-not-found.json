@@ -1,0 +1,7 @@
+{
+  "case_id": "PA-7003",
+  "member_id": "M-9999",
+  "provider_id": "P-9999",
+  "requested_service": "Lumbar spine MRI",
+  "clinical_information": ["Patient reports lower-back pain."]
+}

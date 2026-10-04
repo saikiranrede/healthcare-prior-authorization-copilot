@@ -8,7 +8,7 @@ from openai import OpenAI
 from pydantic import ValidationError
 
 from app.prompts import (
-    ELIGIBILITY_TOOL_INSTRUCTIONS,
+    ENTERPRISE_TOOL_INSTRUCTIONS,
     PRIOR_AUTHORIZATION_INSTRUCTIONS,
 )
 from app.schemas import (
@@ -18,7 +18,7 @@ from app.schemas import (
     TokenUsage,
     ToolExecutionRecord,
 )
-from app.tools import ELIGIBILITY_TOOLS, execute_tool
+from app.tools import ENTERPRISE_TOOLS, execute_tool
 
 
 load_dotenv()
@@ -45,6 +45,7 @@ Analyze the following case data.
 
 Case ID: {case.case_id}
 Member ID: {case.member_id}
+Provider ID: {case.provider_id}
 Requested service: {case.requested_service}
 Clinical information:
 {case.clinical_information}
@@ -78,64 +79,93 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
         # Call 1: require the model to request the eligibility tool.
         tool_response = client.responses.create(
             model=MODEL,
-            instructions=ELIGIBILITY_TOOL_INSTRUCTIONS,
+            instructions=ENTERPRISE_TOOL_INSTRUCTIONS,
             input=input_items,
-            tools=ELIGIBILITY_TOOLS,
-            tool_choice={
-                "type": "function",
-                "name": "check_member_eligibility",
-            },
-            parallel_tool_calls=False,
+            tools=ENTERPRISE_TOOLS,
+            tool_choice="required",
+            parallel_tool_calls=True,
             store=False,
         )
 
-        tool_call = next(
-            (
-                item
-                for item in tool_response.output
-                if item.type == "function_call"
-            ),
-            None,
-        )
+        tool_calls = [
+            
+            item
+            for item in tool_response.output
+            if item.type == "function_call"
+            
+        ]
 
-        if tool_call is None:
+        if not tool_calls:
             raise HTTPException(
                 status_code=502,
-                detail="The model did not request the required eligibility tool.",
+                detail="The model did not request enterprise tools.",
             )
 
-        try:
-            raw_arguments = json.loads(tool_call.arguments)
-        except json.JSONDecodeError as exc:
-            raise HTTPException(
-                status_code=502,
-                detail="The model returned invalid tool arguments.",
-            ) from exc
-
-        tool_started = time.perf_counter()
-
-        eligibility_result = execute_tool(
-            tool_name=tool_call.name,
-            raw_arguments=raw_arguments,
-        )
-
-        tool_duration_ms = round(
-            (time.perf_counter() - tool_started) * 1000
-        )
-
-        # Preserve the first response, including any reasoning items.
         input_items.extend(tool_response.output)
 
-        # Return the deterministic application result to the model.
-        input_items.append(
-            {
-                "type": "function_call_output",
-                "call_id": tool_call.call_id,
-                "output": json.dumps(
-                    eligibility_result.model_dump(mode="json")
-                ),
-            }
-        )
+        tool_results = {}
+        tool_executions = []
+
+        for tool_call in tool_calls:
+            raw_arguments = json.loads(tool_call.arguments)
+
+            tool_started = time.perf_counter()
+
+            result = execute_tool(
+                tool_name=tool_call.name,
+                raw_arguments=raw_arguments,
+            )
+
+            duration_ms = round(
+                (time.perf_counter() - tool_started) * 1000
+            )
+
+            tool_results[tool_call.name] = result
+
+            tool_executions.append(
+                ToolExecutionRecord(
+                    tool_name=tool_call.name,
+                    call_id=tool_call.call_id,
+                    status="succeeded",
+                    duration_ms=duration_ms,
+                )
+            )
+
+            input_items.append(
+                {
+                    "type": "function_call_output",
+                    "call_id": tool_call.call_id,
+                    "output": json.dumps(
+                        result.model_dump(mode="json")
+                    ),
+                }
+            )
+
+        required_tools = {
+            "check_member_eligibility",
+            "get_claim_history",
+            "get_provider_information",
+        }
+
+        executed_tools = set(tool_results)
+
+        missing_tools = required_tools - executed_tools
+
+        if missing_tools:
+            raise HTTPException(
+                status_code=502,
+                detail={
+                    "message": "Required enterprise tools were not executed.",
+                    "missing_tools": sorted(missing_tools),
+                },
+            )
+
+
+        if len(tool_calls) != len(executed_tools):
+            raise HTTPException(
+                status_code=502,
+                detail="One or more enterprise tools were requested more than once.",
+            )
 
         # Call 2: convert case data + tool result into structured output.
         final_response = client.responses.parse(
@@ -143,7 +173,7 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
             instructions=PRIOR_AUTHORIZATION_INSTRUCTIONS,
             input=input_items,
             text_format=StructuredCaseAnalysis,
-            max_output_tokens=700,
+            max_output_tokens=900,
             store=False,
         )
 
@@ -164,15 +194,14 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
             model=MODEL,
             latency_ms=total_latency_ms,
             token_usage=combine_usage(tool_response, final_response),
-            eligibility_verification=eligibility_result,
-            tool_executions=[
-                ToolExecutionRecord(
-                    tool_name="check_member_eligibility",
-                    call_id=tool_call.call_id,
-                    status="succeeded",
-                    duration_ms=tool_duration_ms,
-                )
+            eligibility_verification=tool_results[
+                "check_member_eligibility"
             ],
+            claim_history=tool_results["get_claim_history"],
+            provider_information=tool_results[
+                "get_provider_information"
+            ],
+            tool_executions=tool_executions,
             analysis=analysis,
         )
 
