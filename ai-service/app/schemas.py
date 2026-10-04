@@ -8,6 +8,8 @@ class CaseAnalysisRequest(BaseModel):
 
     member_id: str = Field(min_length=1)
 
+    provider_id: str = Field(min_length=1)
+
     case_id: str = Field(
         min_length=1,
         max_length=50,
@@ -136,17 +138,55 @@ class EligibilityResult(BaseModel):
 
 
 class ToolExecutionRecord(BaseModel):
-    tool_name: Literal["check_member_eligibility"]
+    tool_name: Literal[
+        "check_member_eligibility",
+        "get_claim_history",
+        "get_provider_information",
+        ]
     call_id: str
-    status: Literal["succeeded"]
+    status: Literal["succeeded", "failed"]
     duration_ms: int
 
+
+class ClaimRecord(BaseModel):
+    claim_id: str
+    service_date: str
+    service_type: str
+    diagnosis_code: str
+    procedure_code: str
+    status: Literal["paid", "denied", "pending"]
+
+
+class ClaimHistoryResult(BaseModel):
+    member_id: str
+    claims: list[ClaimRecord]
+    total_claims: int
+    source: Literal["synthetic_claims_repository"]
+    checked_at: str
+
+
+class ProviderInformationResult(BaseModel):
+    provider_id: str
+    provider_name: str | None = None
+    specialty: str | None = None
+    network_status: Literal[
+        "in_network",
+        "out_of_network",
+        "not_found",
+    ]
+    active: bool | None = None
+    source: Literal["synthetic_provider_directory"]
+    checked_at: str
+
+    
 
 class CaseAnalysisResponse(BaseModel):
     request_id: str
     model: str
     analysis: StructuredCaseAnalysis
     eligibility_verification: EligibilityResult
+    claim_history: ClaimHistoryResult
+    provider_information: ProviderInformationResult
     tool_executions: list[ToolExecutionRecord]
     latency_ms: int
     token_usage: TokenUsage | None = None
