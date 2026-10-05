@@ -1,0 +1,22 @@
+{
+  "index_name": "synthetic-healthcare-policy-index",
+  "index_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "embedding_model": "text-embedding-3-small",
+  "embedding_dimensions": 1536,
+  "chunk_count": 50,
+  "vector_dtype": "float32",
+  "vectors_normalized": true,
+  "similarity_metric": "cosine",
+  "created_at": "2026-10-05T18:33:35.081562+00:00",
+  "source_policy_manifest": "data/policies/v1.0.0/manifest.json",
+  "source_policy_manifest_sha256": "4debbdb75ba795e592d72288c111d29b578a56016bf7274e1c8aeb78299a9646",
+  "chunks_filename": "chunks.jsonl",
+  "chunks_sha256": "b43696d1072c829bf3db2181a330a195e7d5fafb45ebd76e1cc6aa464899ba8d",
+  "embeddings_filename": "embeddings.npy",
+  "embeddings_sha256": "a2ed924abefa9315d63ea1664fdfce7042ecc6e971590c352537f83e2017a80a",
+  "embedding_usage": {
+    "prompt_tokens": null,
+    "total_tokens": null
+  }
+}

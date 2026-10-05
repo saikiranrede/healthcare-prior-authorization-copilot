@@ -1,4 +1,6 @@
 openai
 python-dotenv
 fastapi
+numpy
+pytest
 uvicorn[standard]

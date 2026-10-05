@@ -382,3 +382,22 @@ Validate the dataset with:
 
 ```bash
 python scripts/validate_policy_dataset.py
+
+
+
+## Policy Vector Index
+
+The 10-policy synthetic dataset is converted into approximately 50
+section-level chunks and embedded using `text-embedding-3-small`.
+
+The local index stores:
+
+- L2-normalized vectors in NumPy format
+- Source metadata in JSON Lines format
+- Dataset and model provenance in an index manifest
+- SHA-256 checksums for integrity validation
+
+Build the index:
+
+```bash
+python scripts/build_policy_index.py
