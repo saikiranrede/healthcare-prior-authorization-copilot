@@ -14,11 +14,17 @@ from app.prompts import (
 from app.schemas import (
     CaseAnalysisRequest,
     CaseAnalysisResponse,
+    HealthResponse,
     StructuredCaseAnalysis,
     TokenUsage,
     ToolExecutionRecord,
 )
 from app.tools import ENTERPRISE_TOOLS, execute_tool
+from app.retrieval import get_policy_retrieval_service
+from app.retrieval_schemas import (
+    PolicyRetrievalRequest,
+    PolicyRetrievalResponse,
+)
 
 
 load_dotenv()
@@ -52,16 +58,16 @@ Clinical information:
 """.strip()
 
 
-# @app.get(
-#     "/health",
-#     response_model=HealthResponse,
-#     tags=["System"],
-# )
-# def health_check() -> HealthResponse:
-#     return HealthResponse(
-#         status="healthy",
-#         service="healthcare-prior-authorization-copilot",
-#     )
+@app.get(
+    "/health",
+    response_model=HealthResponse,
+    tags=["System"],
+)
+def health_check() -> HealthResponse:
+    return HealthResponse(
+        status="healthy",
+        service="healthcare-prior-authorization-copilot",
+    )
 
 
 @app.post("/analyze-case", response_model=CaseAnalysisResponse)
@@ -241,3 +247,38 @@ def combine_usage(*responses) -> TokenUsage | None:
         output_tokens=output_tokens,
         total_tokens=input_tokens + output_tokens,
     )
+
+@app.post(
+    "/retrieve-policies",
+    response_model=PolicyRetrievalResponse,
+)
+def retrieve_policies(
+    request: PolicyRetrievalRequest,
+) -> PolicyRetrievalResponse:
+    try:
+        retrieval_service = (
+            get_policy_retrieval_service()
+        )
+
+        return retrieval_service.retrieve(request)
+
+    except FileNotFoundError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Policy vector index is not available. "
+                "Build the index before retrieving policies."
+            ),
+        ) from exc
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail="Policy retrieval failed.",
+        ) from exc

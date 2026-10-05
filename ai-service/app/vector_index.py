@@ -4,9 +4,12 @@ from pathlib import Path
 import numpy as np
 from openai import OpenAI
 
+from dataclasses import dataclass
+
 from app.chunking import PolicyChunk
 
 
+@dataclass
 class PolicySearchResult:
     def __init__(
         self,
@@ -18,6 +21,13 @@ class PolicySearchResult:
         self.similarity_score = similarity_score
         self.rank = rank
 
+
+@dataclass
+class PolicySearchResponse:
+    results: list[PolicySearchResult]
+    query_tokens: int | None
+
+    
 
 class PolicyVectorIndex:
     def __init__(
@@ -78,10 +88,13 @@ class PolicyVectorIndex:
         return vector / norm
 
     def search(
-        self,
-        query: str,
-        top_k: int = 5,
-    ) -> list[PolicySearchResult]:
+    self,
+    query: str,
+    top_k: int = 5,
+    service_category: str | None = None,
+    minimum_score: float | None = None,
+    ) -> PolicySearchResponse:
+        
         normalized_query = query.strip()
 
         if not normalized_query:
@@ -105,24 +118,43 @@ class PolicyVectorIndex:
             dtype=np.float32,
         )
 
-        query_vector = self.normalize_vector(
-            query_vector
-        )
+        if query_vector.shape[0] != self.vectors.shape[1]:
+            raise ValueError(
+                "Query embedding dimensions do not match index."
+            )
 
-        # Stored vectors and the query are normalized.
-        # Their dot product is cosine similarity.
+        query_vector = self.normalize_vector(query_vector)
+
+        # Vectors are normalized, so dot product equals cosine similarity.
         scores = self.vectors @ query_vector
 
-        result_count = min(
-            top_k,
-            len(self.chunks),
-        )
+        candidate_indexes = []
 
-        ranked_indexes = np.argsort(
-            scores
-        )[::-1][:result_count]
+        for index, chunk in enumerate(self.chunks):
+            if (
+                service_category is not None
+                and chunk.service_category
+                != service_category
+            ):
+                continue
 
-        return [
+            score = float(scores[index])
+
+            if (
+                minimum_score is not None
+                and score < minimum_score
+            ):
+                continue
+
+            candidate_indexes.append(index)
+
+        ranked_indexes = sorted(
+            candidate_indexes,
+            key=lambda index: float(scores[index]),
+            reverse=True,
+        )[:top_k]
+
+        results = [
             PolicySearchResult(
                 chunk=self.chunks[index],
                 similarity_score=float(scores[index]),
@@ -133,3 +165,14 @@ class PolicyVectorIndex:
                 start=1,
             )
         ]
+
+        usage = getattr(response, "usage", None)
+
+        return PolicySearchResponse(
+            results=results,
+            query_tokens=(
+                usage.prompt_tokens
+                if usage is not None
+                else None
+            ),
+        )

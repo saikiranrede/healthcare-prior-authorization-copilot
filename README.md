@@ -401,3 +401,25 @@ Build the index:
 
 ```bash
 python scripts/build_policy_index.py
+
+
+## Policy Retrieval API
+
+The service exposes semantic retrieval over the versioned synthetic
+healthcare-policy index.
+
+### Endpoint
+
+`POST /retrieve-policies`
+
+### Example
+
+```bash
+curl -s \
+  -X POST http://localhost:8000/retrieve-policies \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "documentation required for lumbar spine MRI",
+    "top_k": 3,
+    "service_category": "advanced-diagnostic-imaging"
+  }' | jq
