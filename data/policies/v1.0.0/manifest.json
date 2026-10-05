@@ -1,0 +1,80 @@
+{
+  "dataset_name": "synthetic-healthcare-policies",
+  "dataset_version": "1.0.0",
+  "policy_count": 10,
+  "created_for": "healthcare-fde-portfolio",
+  "contains_real_phi": false,
+  "contains_real_payer_policies": false,
+  "policies": [
+    {
+      "policy_id": "POL-LUMBAR-MRI-001",
+      "title": "Lumbar Spine MRI",
+      "document_version": "1.0.0",
+      "filename": "POL-LUMBAR-MRI-001.json",
+      "sha256": "39330302fa58c6d9339ea72e2a0d6a5dfc2f9147d29824a2c438c6acc7fc3df9"
+    },
+    {
+      "policy_id": "POL-CERVICAL-MRI-002",
+      "title": "Cervical Spine MRI",
+      "document_version": "1.0.0",
+      "filename": "POL-CERVICAL-MRI-002.json",
+      "sha256": "6ccad80d7813d668b924e019a66e566e6d78a9beff23aa1a757b053e7e7ea83b"
+    },
+    {
+      "policy_id": "POL-KNEE-MRI-003",
+      "title": "Knee MRI",
+      "document_version": "1.0.0",
+      "filename": "POL-KNEE-MRI-003.json",
+      "sha256": "18d1b835a0b5ff148a343e36ee496bb643171c402c5827ec54959a2aec3aa669"
+    },
+    {
+      "policy_id": "POL-CHEST-CT-004",
+      "title": "Chest CT",
+      "document_version": "1.0.0",
+      "filename": "POL-CHEST-CT-004.json",
+      "sha256": "3eed07ccc5a12040701a73454f3bdf4866bb1022a86fb18c25ebac43543c7af5"
+    },
+    {
+      "policy_id": "POL-PHYSICAL-THERAPY-005",
+      "title": "Outpatient Physical Therapy",
+      "document_version": "1.0.0",
+      "filename": "POL-PHYSICAL-THERAPY-005.json",
+      "sha256": "31a14281f0f27e4252d452eee62d5cb62927989be96847720ea9496e2a3ccc7f"
+    },
+    {
+      "policy_id": "POL-CPAP-006",
+      "title": "Positive Airway Pressure Equipment",
+      "document_version": "1.0.0",
+      "filename": "POL-CPAP-006.json",
+      "sha256": "c064066efe5d31594411492f4fc6579e70c8525e96b75f2a8b8aea0b5f95b6ee"
+    },
+    {
+      "policy_id": "POL-HOME-HEALTH-007",
+      "title": "Home Health Services",
+      "document_version": "1.0.0",
+      "filename": "POL-HOME-HEALTH-007.json",
+      "sha256": "32be46db1b6712394ccc9d2c257043eaa628a32f49cc1dffe59a51b4b9d327e2"
+    },
+    {
+      "policy_id": "POL-INPATIENT-008",
+      "title": "Elective Inpatient Admission",
+      "document_version": "1.0.0",
+      "filename": "POL-INPATIENT-008.json",
+      "sha256": "27dbe1ed08f62627c709baced9d0643e523c3f0e2d1f950bbeae992690e9aa9a"
+    },
+    {
+      "policy_id": "POL-BIOLOGIC-009",
+      "title": "Specialty Biologic Medication",
+      "document_version": "1.0.0",
+      "filename": "POL-BIOLOGIC-009.json",
+      "sha256": "821d56541aba525bbc5ec633d9d1c1ae0d8ac7e5bc44422845baa8fa66f3f4e1"
+    },
+    {
+      "policy_id": "POL-COLONOSCOPY-010",
+      "title": "Colonoscopy Services",
+      "document_version": "1.0.0",
+      "filename": "POL-COLONOSCOPY-010.json",
+      "sha256": "09ed27938e9ecabaa4a279223e6972df3ed5b3e44d11578294cc686eb1d13de0"
+    }
+  ]
+}

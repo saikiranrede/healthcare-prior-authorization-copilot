@@ -1,0 +1,48 @@
+{
+  "policy_id": "POL-PHYSICAL-THERAPY-005",
+  "title": "Outpatient Physical Therapy",
+  "document_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "effective_date": "2026-01-01",
+  "last_reviewed_date": "2026-09-01",
+  "status": "active",
+  "policy_type": "synthetic",
+  "service_category": "rehabilitation",
+  "jurisdiction": "synthetic-national",
+  "keywords": [
+    "physical therapy",
+    "rehabilitation",
+    "functional limitation",
+    "plan of care"
+  ],
+  "sections": [
+    {
+      "section_id": "purpose",
+      "heading": "Purpose",
+      "text": "This synthetic policy identifies information used to prepare a service request for human review."
+    },
+    {
+      "section_id": "coverage-criteria",
+      "heading": "Coverage Criteria",
+      "text": "- The record identifies a condition associated with measurable functional limitations.\n- The plan of care contains measurable treatment goals.\n- Continued-service requests describe objective progress or barriers to progress."
+    },
+    {
+      "section_id": "required-documentation",
+      "heading": "Required Documentation",
+      "text": "- Diagnosis and functional limitations\n- Initial assessment findings\n- Frequency and duration of the proposed plan\n- Measurable short-term and long-term goals\n- Progress notes for continued-service requests"
+    },
+    {
+      "section_id": "limitations",
+      "heading": "Limitations and Exceptions",
+      "text": "- A paid therapy claim does not establish completion of a therapy course.\n- Maintenance services may require separate benefit review.\n- Benefits and visit limits must be checked independently."
+    },
+    {
+      "section_id": "decision-boundary",
+      "heading": "Decision Boundary",
+      "text": "Meeting the listed criteria does not automatically approve the request. Eligibility, benefits, exclusions, clinical context and applicable requirements must be reviewed by an authorized human reviewer."
+    }
+  ],
+  "human_review_required": true,
+  "authorization_decision_supported": false,
+  "disclaimer": "Synthetic policy created for software demonstration and evaluation. It is not medical or insurance guidance."
+}

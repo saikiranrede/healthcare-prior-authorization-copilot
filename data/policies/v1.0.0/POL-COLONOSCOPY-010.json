@@ -1,0 +1,48 @@
+{
+  "policy_id": "POL-COLONOSCOPY-010",
+  "title": "Colonoscopy Services",
+  "document_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "effective_date": "2026-01-01",
+  "last_reviewed_date": "2026-09-01",
+  "status": "active",
+  "policy_type": "synthetic",
+  "service_category": "gastroenterology",
+  "jurisdiction": "synthetic-national",
+  "keywords": [
+    "colonoscopy",
+    "screening",
+    "diagnostic colonoscopy",
+    "gastrointestinal symptoms"
+  ],
+  "sections": [
+    {
+      "section_id": "purpose",
+      "heading": "Purpose",
+      "text": "This synthetic policy identifies information used to prepare a service request for human review."
+    },
+    {
+      "section_id": "coverage-criteria",
+      "heading": "Coverage Criteria",
+      "text": "- The request distinguishes screening, surveillance and diagnostic indications.\n- The record includes relevant symptoms, risk factors or previous findings.\n- Previous procedure dates and results are identified when applicable."
+    },
+    {
+      "section_id": "required-documentation",
+      "heading": "Required Documentation",
+      "text": "- Reason for the requested procedure\n- Relevant symptoms and duration\n- Personal and family risk history\n- Previous colonoscopy date and summarized findings\n- Relevant laboratory, imaging or specialist findings"
+    },
+    {
+      "section_id": "limitations",
+      "heading": "Limitations and Exceptions",
+      "text": "- Screening and diagnostic benefits may differ.\n- Prior procedure history should be verified when available.\n- This policy supports case preparation only."
+    },
+    {
+      "section_id": "decision-boundary",
+      "heading": "Decision Boundary",
+      "text": "Meeting the listed criteria does not automatically approve the request. Eligibility, benefits, exclusions, clinical context and applicable requirements must be reviewed by an authorized human reviewer."
+    }
+  ],
+  "human_review_required": true,
+  "authorization_decision_supported": false,
+  "disclaimer": "Synthetic policy created for software demonstration and evaluation. It is not medical or insurance guidance."
+}
