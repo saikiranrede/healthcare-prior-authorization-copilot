@@ -1,0 +1,48 @@
+{
+  "policy_id": "POL-HOME-HEALTH-007",
+  "title": "Home Health Services",
+  "document_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "effective_date": "2026-01-01",
+  "last_reviewed_date": "2026-09-01",
+  "status": "active",
+  "policy_type": "synthetic",
+  "service_category": "home-health",
+  "jurisdiction": "synthetic-national",
+  "keywords": [
+    "home health",
+    "skilled nursing",
+    "homebound",
+    "plan of care"
+  ],
+  "sections": [
+    {
+      "section_id": "purpose",
+      "heading": "Purpose",
+      "text": "This synthetic policy identifies information used to prepare a service request for human review."
+    },
+    {
+      "section_id": "coverage-criteria",
+      "heading": "Coverage Criteria",
+      "text": "- The request describes why skilled services are needed in the home.\n- The record includes a treating-provider order and plan of care.\n- The documentation explains the member's functional limitations and ability to leave home."
+    },
+    {
+      "section_id": "required-documentation",
+      "heading": "Required Documentation",
+      "text": "- Ordering provider and order date\n- Requested skilled services and frequency\n- Homebound assessment\n- Functional and safety limitations\n- Goals, expected duration and discharge plan"
+    },
+    {
+      "section_id": "limitations",
+      "heading": "Limitations and Exceptions",
+      "text": "- Need for general assistance alone may not establish a skilled-service requirement.\n- Custodial and skilled services must be distinguished.\n- Human clinical and benefit review is required."
+    },
+    {
+      "section_id": "decision-boundary",
+      "heading": "Decision Boundary",
+      "text": "Meeting the listed criteria does not automatically approve the request. Eligibility, benefits, exclusions, clinical context and applicable requirements must be reviewed by an authorized human reviewer."
+    }
+  ],
+  "human_review_required": true,
+  "authorization_decision_supported": false,
+  "disclaimer": "Synthetic policy created for software demonstration and evaluation. It is not medical or insurance guidance."
+}

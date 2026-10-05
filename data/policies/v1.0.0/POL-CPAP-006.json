@@ -1,0 +1,48 @@
+{
+  "policy_id": "POL-CPAP-006",
+  "title": "Positive Airway Pressure Equipment",
+  "document_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "effective_date": "2026-01-01",
+  "last_reviewed_date": "2026-09-01",
+  "status": "active",
+  "policy_type": "synthetic",
+  "service_category": "durable-medical-equipment",
+  "jurisdiction": "synthetic-national",
+  "keywords": [
+    "CPAP",
+    "positive airway pressure",
+    "sleep apnea",
+    "sleep study"
+  ],
+  "sections": [
+    {
+      "section_id": "purpose",
+      "heading": "Purpose",
+      "text": "This synthetic policy identifies information used to prepare a service request for human review."
+    },
+    {
+      "section_id": "coverage-criteria",
+      "heading": "Coverage Criteria",
+      "text": "- The request includes a documented sleep-related diagnosis.\n- The record references an appropriate diagnostic sleep evaluation.\n- The requested equipment and settings are supported by a treating-provider order."
+    },
+    {
+      "section_id": "required-documentation",
+      "heading": "Required Documentation",
+      "text": "- Sleep-study type, date and summarized results\n- Treating-provider diagnosis\n- Equipment order and requested settings\n- Relevant symptoms and comorbidities\n- Usage or adherence information for continued coverage"
+    },
+    {
+      "section_id": "limitations",
+      "heading": "Limitations and Exceptions",
+      "text": "- An equipment order alone does not establish all coverage requirements.\n- Replacement equipment may require previous-device information.\n- Benefit coverage must be checked separately."
+    },
+    {
+      "section_id": "decision-boundary",
+      "heading": "Decision Boundary",
+      "text": "Meeting the listed criteria does not automatically approve the request. Eligibility, benefits, exclusions, clinical context and applicable requirements must be reviewed by an authorized human reviewer."
+    }
+  ],
+  "human_review_required": true,
+  "authorization_decision_supported": false,
+  "disclaimer": "Synthetic policy created for software demonstration and evaluation. It is not medical or insurance guidance."
+}

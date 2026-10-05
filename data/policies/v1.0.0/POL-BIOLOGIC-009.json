@@ -1,0 +1,48 @@
+{
+  "policy_id": "POL-BIOLOGIC-009",
+  "title": "Specialty Biologic Medication",
+  "document_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "effective_date": "2026-01-01",
+  "last_reviewed_date": "2026-09-01",
+  "status": "active",
+  "policy_type": "synthetic",
+  "service_category": "specialty-pharmacy",
+  "jurisdiction": "synthetic-national",
+  "keywords": [
+    "biologic",
+    "specialty medication",
+    "step therapy",
+    "prior treatment"
+  ],
+  "sections": [
+    {
+      "section_id": "purpose",
+      "heading": "Purpose",
+      "text": "This synthetic policy identifies information used to prepare a service request for human review."
+    },
+    {
+      "section_id": "coverage-criteria",
+      "heading": "Coverage Criteria",
+      "text": "- The request identifies the diagnosis and severity of the condition.\n- Previous therapies, outcomes and relevant contraindications are documented.\n- The requested medication, dose and frequency are included."
+    },
+    {
+      "section_id": "required-documentation",
+      "heading": "Required Documentation",
+      "text": "- Confirmed diagnosis and severity assessment\n- Previous medications, duration and response\n- Contraindications or intolerance when applicable\n- Relevant laboratory or screening results\n- Requested drug, dose, frequency and treatment plan"
+    },
+    {
+      "section_id": "limitations",
+      "heading": "Limitations and Exceptions",
+      "text": "- Formulary and benefit rules must be evaluated separately.\n- A previous medication claim does not establish adherence or treatment failure.\n- The synthetic policy does not recommend a specific medication."
+    },
+    {
+      "section_id": "decision-boundary",
+      "heading": "Decision Boundary",
+      "text": "Meeting the listed criteria does not automatically approve the request. Eligibility, benefits, exclusions, clinical context and applicable requirements must be reviewed by an authorized human reviewer."
+    }
+  ],
+  "human_review_required": true,
+  "authorization_decision_supported": false,
+  "disclaimer": "Synthetic policy created for software demonstration and evaluation. It is not medical or insurance guidance."
+}

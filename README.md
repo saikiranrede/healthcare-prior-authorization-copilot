@@ -356,3 +356,29 @@ These are basic integration checks. The formal prompt-injection suite will be ad
 - Separated eligibility, claims and network status from medical necessity.
 - Preserved mandatory human review.
 - Used synthetic healthcare data throughout the implementation.
+
+
+## Synthetic Policy Knowledge Base
+
+The project includes 10 versioned synthetic healthcare policies covering
+diagnostic imaging, rehabilitation, durable medical equipment, home
+health, inpatient admissions, specialty pharmacy and gastroenterology.
+
+Each policy includes:
+
+- Stable policy and section identifiers
+- Document and dataset versions
+- Effective-date metadata
+- Search keywords
+- Coverage-preparation criteria
+- Required documentation
+- Limitations and exceptions
+- A mandatory human-review boundary
+
+The dataset contains no real payer policies or protected health
+information.
+
+Validate the dataset with:
+
+```bash
+python scripts/validate_policy_dataset.py

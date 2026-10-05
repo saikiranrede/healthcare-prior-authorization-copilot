@@ -1,0 +1,48 @@
+{
+  "policy_id": "POL-INPATIENT-008",
+  "title": "Elective Inpatient Admission",
+  "document_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "effective_date": "2026-01-01",
+  "last_reviewed_date": "2026-09-01",
+  "status": "active",
+  "policy_type": "synthetic",
+  "service_category": "facility-admission",
+  "jurisdiction": "synthetic-national",
+  "keywords": [
+    "inpatient admission",
+    "elective admission",
+    "severity of illness",
+    "hospital care"
+  ],
+  "sections": [
+    {
+      "section_id": "purpose",
+      "heading": "Purpose",
+      "text": "This synthetic policy identifies information used to prepare a service request for human review."
+    },
+    {
+      "section_id": "coverage-criteria",
+      "heading": "Coverage Criteria",
+      "text": "- The request identifies the reason inpatient-level care is being considered.\n- The record describes severity, monitoring needs and planned interventions.\n- The documentation explains why a lower level of care may be insufficient."
+    },
+    {
+      "section_id": "required-documentation",
+      "heading": "Required Documentation",
+      "text": "- Primary diagnosis and relevant comorbidities\n- Current symptoms, examination and test results\n- Planned treatments, procedures and monitoring\n- Expected length of stay\n- Reason outpatient or observation care may be insufficient"
+    },
+    {
+      "section_id": "limitations",
+      "heading": "Limitations and Exceptions",
+      "text": "- Network status does not establish the appropriate level of care.\n- Emergency admissions may follow a separate notification workflow.\n- An authorized reviewer makes the final determination."
+    },
+    {
+      "section_id": "decision-boundary",
+      "heading": "Decision Boundary",
+      "text": "Meeting the listed criteria does not automatically approve the request. Eligibility, benefits, exclusions, clinical context and applicable requirements must be reviewed by an authorized human reviewer."
+    }
+  ],
+  "human_review_required": true,
+  "authorization_decision_supported": false,
+  "disclaimer": "Synthetic policy created for software demonstration and evaluation. It is not medical or insurance guidance."
+}

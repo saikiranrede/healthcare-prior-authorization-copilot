@@ -1,0 +1,48 @@
+{
+  "policy_id": "POL-CHEST-CT-004",
+  "title": "Chest CT",
+  "document_version": "1.0.0",
+  "dataset_version": "1.0.0",
+  "effective_date": "2026-01-01",
+  "last_reviewed_date": "2026-09-01",
+  "status": "active",
+  "policy_type": "synthetic",
+  "service_category": "advanced-diagnostic-imaging",
+  "jurisdiction": "synthetic-national",
+  "keywords": [
+    "chest CT",
+    "pulmonary nodule",
+    "abnormal chest radiograph",
+    "thoracic imaging"
+  ],
+  "sections": [
+    {
+      "section_id": "purpose",
+      "heading": "Purpose",
+      "text": "This synthetic policy identifies information used to prepare a service request for human review."
+    },
+    {
+      "section_id": "coverage-criteria",
+      "heading": "Coverage Criteria",
+      "text": "- The request states the diagnostic question the CT is intended to address.\n- Relevant prior imaging or clinical findings are identified.\n- The requested study and use of contrast are clinically explained."
+    },
+    {
+      "section_id": "required-documentation",
+      "heading": "Required Documentation",
+      "text": "- Relevant symptoms and duration\n- Prior chest imaging findings\n- Known risk factors and relevant medical history\n- Reason for contrast or non-contrast study\n- Requested follow-up interval when applicable"
+    },
+    {
+      "section_id": "limitations",
+      "heading": "Limitations and Exceptions",
+      "text": "- An abnormal prior study should be described rather than merely referenced.\n- Screening and diagnostic requests may follow different review paths.\n- Final review remains a human responsibility."
+    },
+    {
+      "section_id": "decision-boundary",
+      "heading": "Decision Boundary",
+      "text": "Meeting the listed criteria does not automatically approve the request. Eligibility, benefits, exclusions, clinical context and applicable requirements must be reviewed by an authorized human reviewer."
+    }
+  ],
+  "human_review_required": true,
+  "authorization_decision_supported": false,
+  "disclaimer": "Synthetic policy created for software demonstration and evaluation. It is not medical or insurance guidance."
+}
