@@ -2,6 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.retrieval_schemas import PolicyRetrievalResponse
+
 
 class CaseAnalysisRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -34,6 +36,11 @@ class CaseAnalysisRequest(BaseModel):
             ]
         ],
     )
+
+
+class CitedPolicyFinding(BaseModel):
+    finding: str = Field(min_length=1)
+    citation_ids: list[str] = Field(min_length=1)
 
 
 class StructuredCaseAnalysis(BaseModel):
@@ -115,6 +122,34 @@ class StructuredCaseAnalysis(BaseModel):
         )
     )
 
+    policy_basis_status: Literal[
+        "policy_evidence_found",
+        "policy_evidence_not_found",
+        "policy_evidence_unclear",
+    ]
+
+    policy_findings: list[CitedPolicyFinding]
+
+    case_preparation_sufficiency: Literal[
+        "sufficient_to_continue",
+        "insufficient_to_continue",
+        "unclear",
+    ]
+
+    recommended_next_action: Literal[
+        "continue_case_preparation",
+        "request_additional_information",
+        "resolve_eligibility_issue",
+        "resolve_provider_issue",
+        "route_to_human_review",
+    ]
+
+    authorization_decision: Literal["not_determined"]
+    human_review_required: Literal[True]
+
+    limitations: list[str]
+    warnings: list[str]
+
 
 class TokenUsage(BaseModel):
     input_tokens: int
@@ -188,5 +223,7 @@ class CaseAnalysisResponse(BaseModel):
     claim_history: ClaimHistoryResult
     provider_information: ProviderInformationResult
     tool_executions: list[ToolExecutionRecord]
+    policy_retrieval: PolicyRetrievalResponse
     latency_ms: int
     token_usage: TokenUsage | None = None
+

@@ -423,3 +423,26 @@ curl -s \
     "top_k": 3,
     "service_category": "advanced-diagnostic-imaging"
   }' | jq
+
+
+
+## End-to-End Tool Calling and RAG
+
+The `/analyze-case` endpoint combines:
+
+- Member eligibility verification
+- Claim-history retrieval
+- Provider-directory verification
+- Semantic policy retrieval
+- Block-level source citations
+- Strict structured output
+- Application-level citation validation
+- Mandatory human review
+
+Enterprise tool results provide operational facts, while the vector
+index provides policy evidence. Every generated policy finding must cite
+a chunk retrieved during the same request. Citation IDs that were not
+retrieved are rejected by the application.
+
+The workflow prepares evidence for a reviewer but does not approve or
+deny authorization.

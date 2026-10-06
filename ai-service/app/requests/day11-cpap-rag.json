@@ -1,0 +1,7 @@
+{
+  "case_id": "PA-1102",
+  "member_id": "M-1001",
+  "provider_id": "P-2001",
+  "requested_service": "CPAP equipment",
+  "clinical_information": ["The request states that the patient has sleep apnea, but no sleep-study results, equipment settings or treating-provider order were submitted."]
+}
