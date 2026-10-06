@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from app.prompts import (
     ENTERPRISE_TOOL_INSTRUCTIONS,
     PRIOR_AUTHORIZATION_INSTRUCTIONS,
+    GROUNDED_CASE_ANALYSIS_INSTRUCTIONS,
 )
 from app.schemas import (
     CaseAnalysisRequest,
@@ -24,6 +25,12 @@ from app.retrieval import get_policy_retrieval_service
 from app.retrieval_schemas import (
     PolicyRetrievalRequest,
     PolicyRetrievalResponse,
+)
+from app.case_workflow import (
+    CitationValidationError,
+    build_grounded_policy_context,
+    build_policy_retrieval_query,
+    validate_policy_citations,
 )
 
 
@@ -156,6 +163,7 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
         executed_tools = set(tool_results)
 
         missing_tools = required_tools - executed_tools
+        unexpected_tools = executed_tools - required_tools
 
         if missing_tools:
             raise HTTPException(
@@ -166,6 +174,19 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
                 },
             )
 
+        if unexpected_tools:
+            raise HTTPException(
+                status_code=502,
+                detail={
+                    "message": (
+                        "Unexpected enterprise tools were executed."
+                    ),
+                    "unexpected_tools": sorted(
+                        unexpected_tools
+                    ),
+                },
+            )
+
 
         if len(tool_calls) != len(executed_tools):
             raise HTTPException(
@@ -173,13 +194,66 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
                 detail="One or more enterprise tools were requested more than once.",
             )
 
+        # Retrieve applicable policy evidence
+        retrieval_service = get_policy_retrieval_service()
+
+        retrieval_query = build_policy_retrieval_query(case)
+
+        policy_retrieval = retrieval_service.retrieve(
+            PolicyRetrievalRequest(
+                query=retrieval_query,
+                top_k=5,
+            )
+        )
+
+        if not policy_retrieval.results:
+            policy_context = (
+                "RETRIEVED POLICY EVIDENCE\n\n"
+                "No policy evidence was retrieved."
+            )
+        else:
+            policy_context = build_grounded_policy_context(
+                retrieval_service=retrieval_service,
+                retrieval=policy_retrieval,
+            )
+
+
+        input_items.append(
+            {
+                "role": "user",
+                "content": "\n".join(
+                    [
+                        (
+                            "Prepare the final structured case "
+                            "analysis using the enterprise results "
+                            "and retrieved evidence."
+                        ),
+                        "",
+                        policy_context,
+                    ]
+                ),
+            }
+        )
+
         # Call 2: convert case data + tool result into structured output.
+        # final_response = client.responses.parse(
+        #     model=MODEL,
+        #     instructions=PRIOR_AUTHORIZATION_INSTRUCTIONS,
+        #     input=input_items,
+        #     text_format=StructuredCaseAnalysis,
+        #     max_output_tokens=900,
+        #     store=False,
+        # )
+
+        # Generate the grounded structured analysis - case data + tool result + policy retrieval into structured output.
         final_response = client.responses.parse(
             model=MODEL,
-            instructions=PRIOR_AUTHORIZATION_INSTRUCTIONS,
+            instructions=(
+                GROUNDED_CASE_ANALYSIS_INSTRUCTIONS
+            ),
             input=input_items,
             text_format=StructuredCaseAnalysis,
-            max_output_tokens=900,
+            max_output_tokens=1200,
             store=False,
         )
 
@@ -190,6 +264,13 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
                 status_code=502,
                 detail="The model did not return structured analysis.",
             )
+
+        # analysis = enforce_safety_invariants(analysis)
+
+        validate_policy_citations(
+            analysis=analysis,
+            retrieval=policy_retrieval,
+        )
 
         total_latency_ms = round(
             (time.perf_counter() - request_started) * 1000
@@ -203,11 +284,14 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
             eligibility_verification=tool_results[
                 "check_member_eligibility"
             ],
-            claim_history=tool_results["get_claim_history"],
+            claim_history=tool_results[
+                "get_claim_history"
+            ],
             provider_information=tool_results[
                 "get_provider_information"
             ],
             tool_executions=tool_executions,
+            policy_retrieval=policy_retrieval,
             analysis=analysis,
         )
 
@@ -217,6 +301,11 @@ def analyze_case(case: CaseAnalysisRequest) -> CaseAnalysisResponse:
         raise HTTPException(
             status_code=502,
             detail=f"Tool execution failed: {exc}",
+        ) from exc
+    except CitationValidationError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Citation validation failed: {exc}",
         ) from exc
     except Exception as exc:
         raise HTTPException(
